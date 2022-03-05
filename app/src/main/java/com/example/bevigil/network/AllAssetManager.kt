@@ -10,6 +10,6 @@ import com.example.bevigil.model.ErrorData
 
     interface AssetCallback<T> {
         fun onSuccess(success: T)
-        fun onFailure(error: ErrorData?)
+        fun onFailure(error: ErrorData)
     }
 }
