@@ -28,10 +28,16 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
             override fun onSuccess(success: AllAssetsResponse) {
 
                 Log.e(TAG, "onSuccess: "+success.assets.toString())
+                allAssetResponseObserver.postValue(
+                    Resource.success(success)
+                )
             }
 
             override fun onFailure(error: ErrorData) {
                 Log.e(TAG, "onFailure: "+error.message)
+                allAssetResponseObserver.postValue(
+                    Resource.error(error.message?:"Something went wrong")
+                )
             }
         })
     }
