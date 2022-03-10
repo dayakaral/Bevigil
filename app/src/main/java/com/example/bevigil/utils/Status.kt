@@ -1,6 +1,6 @@
 package com.example.bevigil.utils
 
-enum class Status {
+public enum class Status {
     SUCCESS,
     ERROR,
     LOADING

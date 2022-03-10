@@ -1,5 +1,6 @@
 package com.example.bevigil.ui.activities
 
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 public class MainViewModel @Inject constructor(private val dataRepository: DataRepository):
     ViewModel() {
-    private val allAssetResponseObserver: MutableLiveData<Resource<AllAssetsResponse>> = MutableLiveData()
+    val allAssetResponseObserver: MutableLiveData<Resource<AllAssetsResponse>> = MutableLiveData()
+    val onPackageItemClickListener: MutableLiveData<String> = MutableLiveData()
+
+    val allAssetResponse: MutableLiveData<AllAssetsResponse?> = MutableLiveData()
 
     private val TAG = "MainViewModelLog"
 
@@ -40,6 +44,14 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
                 )
             }
         })
+    }
+
+    fun onPackageItemClicked(packageId: String) {
+        onPackageItemClickListener.postValue(packageId)
+    }
+
+    fun getInstalledApps(packageManager: PackageManager): HashMap<String, String> {
+        return dataRepository.getInstalledApps(packageManager)
     }
 
 }

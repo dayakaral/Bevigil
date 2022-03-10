@@ -35,9 +35,9 @@ class AllAssetManagerImpl @Inject constructor(private val assetService: AllAsset
                     return
                 }
                 val jsonObject = JSONObject(response.body().toString())
-                if (response.body()?.getAsJsonObject("detail") != null) {
+                if (response.body()?.get("detail") != null) {
 
-                    callback.onFailure(ErrorData(response.body()?.getAsJsonObject("detail")?.asString))
+                    callback.onFailure(ErrorData(response.body()?.get("detail")?.asString))
                 } else if (response.isSuccessful){
 
                     callback.onSuccess(
