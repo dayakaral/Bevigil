@@ -15,4 +15,6 @@ object Constants {
     const val URL = "url"
     const val AWS_URL = "AWS URL"
     const val AMAZON_EXECUTE_API = "Amazon Execute-API URL"
+    const val VIEW_HOLDER_INSTALLED = 11
+    const val VIEW_HOLDER_STORE = 22
 }

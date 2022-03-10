@@ -6,10 +6,16 @@
         <entry key="app/src/main/res/drawable/home_searchbackground.xml" value="0.19027777777777777" />
         <entry key="app/src/main/res/drawable/home_searchbutton.xml" value="0.18194444444444444" />
         <entry key="app/src/main/res/drawable/home_tab.xml" value="0.18194444444444444" />
+        <entry key="app/src/main/res/drawable/ic_outside_icon.xml" value="0.18541666666666667" />
         <entry key="app/src/main/res/drawable/ic_search_blue_ic.xml" value="0.18194444444444444" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.35025641025641024" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/layout/app_list_item.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_app_store.xml" value="0.23402777777777778" />
+        <entry key="app/src/main/res/layout/asset_list_item.xml" value="0.2637065637065637" />
+        <entry key="app/src/main/res/layout/error_layout.xml" value="0.266796875" />
+        <entry key="app/src/main/res/layout/fragment_all_assets.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_app_store.xml" value="0.228486646884273" />
+        <entry key="app/src/main/res/layout/fragment_asset.xml" value="0.25546875" />
+        <entry key="app/src/main/res/layout/fragment_error.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_installed_app.xml" value="0.23402777777777778" />
       </map>

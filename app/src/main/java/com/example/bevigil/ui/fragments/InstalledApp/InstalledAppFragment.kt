@@ -72,7 +72,8 @@ class InstalledAppFragment : Fragment(), ItemClickListener {
     }
 
     override fun onItemClicked(packageName: String) {
-        viewModel.onPackageItemClicked(packageName)
+        viewModel.getAllAsset(packageName)
+        viewModel.onPackageItemClicked(packageName, true)
     }
 
     companion object {

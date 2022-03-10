@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.AllAssets.AllAssetsFragment">
+
+    <TextView
+        android:id="@+id/heading"
+        android:text="All Assets"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/package_name_assets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/roboto"
+        android:text="com.hddev.gifraja"
+        android:textColor="#434343"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/heading"
+        app:layout_constraintStart_toEndOf="@id/heading" />
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/asset_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heading"
+        app:tabGravity="start"
+        app:tabIndicator="@drawable/home_tab"
+        app:tabIndicatorColor="@color/blue"
+        app:tabIndicatorHeight="3dp"
+        app:tabMaxWidth="0dp"
+        app:tabRippleColor="@color/softBlue"
+        app:tabSelectedTextColor="@color/blue"
+        app:tabMode="scrollable"
+        app:tabTextAppearance="@style/TextAlignmentTab"
+        app:tabTextColor="#4D4D4D">
+    </com.google.android.material.tabs.TabLayout>
+
+
+    <View
+        android:id="@+id/view2"
+        android:background="@color/greyStroke"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/asset_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.viewpager.widget.ViewPager
+        app:layout_constraintTop_toBottomOf="@id/view2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/asset_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+
+
+    </androidx.viewpager.widget.ViewPager>
+</androidx.constraintlayout.widget.ConstraintLayout>

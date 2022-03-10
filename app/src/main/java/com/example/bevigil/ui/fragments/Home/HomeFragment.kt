@@ -12,16 +12,16 @@ import com.example.bevigil.R
 import com.example.bevigil.adapters.HomeViewPagerAdapter
 import com.example.bevigil.adapters.InstalledAppsAdapter
 import com.example.bevigil.databinding.FragmentHomeBinding
+import com.example.bevigil.ui.activities.OnSearchTextListener
 import com.example.bevigil.ui.fragments.AppStore.AppStoreFragment
 import com.example.bevigil.ui.fragments.InstalledApp.InstalledAppFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_installed_app.*
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-class HomeFragment : Fragment() {
+
+class HomeFragment(val searchTextListener: OnSearchTextListener) : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -34,10 +34,7 @@ class HomeFragment : Fragment() {
     private val binding get() = homeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -59,7 +56,7 @@ class HomeFragment : Fragment() {
 
         val fragmentList:ArrayList<Fragment> = ArrayList()
         installedAppFragment = InstalledAppFragment.newInstance("","")
-        appStoreFragment = AppStoreFragment.newInstance("","")
+        appStoreFragment = AppStoreFragment.newInstance()
         fragmentList.add(installedAppFragment)
         fragmentList.add(appStoreFragment)
 
@@ -74,15 +71,23 @@ class HomeFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 installedAppFragment.onSearchTextChanged(p0.toString())
+                appStoreFragment.onSearchTextChanged(p0.toString())
+
             }
         })
 
         search_button.setOnClickListener {
-
+                searchTextListener.onSearchedText(
+                    text_input_layout.text.toString()
+                )
         }
 
         homeViewPagerAdapter = HomeViewPagerAdapter(childFragmentManager, fragmentList)
-
+        val titleList = ArrayList<String>()
+        titleList.add("Installed")
+        titleList.add("App Store")
+        homeViewPagerAdapter.titlesList = titleList
+        homeViewPagerAdapter.size = titleList.size
         viewPager = binding.homePager
         viewPager.adapter = homeViewPagerAdapter
         home_tab_layout.setupWithViewPager(viewPager)
@@ -91,12 +96,9 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        fun newInstance(searchTextListener: OnSearchTextListener) =
+            HomeFragment(searchTextListener).apply {
+
             }
     }
 }

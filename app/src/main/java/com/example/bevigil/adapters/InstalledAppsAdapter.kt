@@ -1,5 +1,6 @@
 package com.example.bevigil.adapters
 
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,8 @@ import com.example.bevigil.R
 
 class InstalledAppsAdapter(val installedAppList: HashMap<String,String>, val itemClickListener: ItemClickListener): RecyclerView.Adapter<InstalledAppsAdapter.ViewHolder>() {
 
-    var appNamesList = installedAppList.values.toList()
-    var packageNameList = installedAppList.keys.toList()
+    var appNamesList:List<String?>? = installedAppList?.values?.toList()
+    var packageNameList:List<String?>? = installedAppList?.keys?.toList()
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appNameTv = itemView.findViewById<TextView>(R.id.app_name_tv)
         val packageNameTv = itemView.findViewById<TextView>(R.id.package_name_tv)
@@ -22,20 +23,26 @@ class InstalledAppsAdapter(val installedAppList: HashMap<String,String>, val ite
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val name = appNamesList[position]
-        val packageName = packageNameList[position]
+        val name = appNamesList?.get(position)
+        val packageName = packageNameList?.get(position)
 
         holder.appNameTv.text = name
         holder.packageNameTv.text = packageName
 
+        if (name == null) {
+            holder.appNameTv.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
-            itemClickListener.onItemClicked(packageName)
+            if (packageName != null) {
+                itemClickListener.onItemClicked(packageName)
+            }
         }
     }
 
 
     override fun getItemCount(): Int {
-        Log.i("daya", "getItemCount: "+packageNameList.size)
-        return packageNameList.size
+        Log.i("daya", "getItemCount: "+packageNameList?.size)
+        return packageNameList?.size?:0
     }
 }

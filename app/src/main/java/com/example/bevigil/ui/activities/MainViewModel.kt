@@ -18,8 +18,10 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
     ViewModel() {
     val allAssetResponseObserver: MutableLiveData<Resource<AllAssetsResponse>> = MutableLiveData()
     val onPackageItemClickListener: MutableLiveData<String> = MutableLiveData()
+    var progressNavigator: ProgressNavigator?=null
 
     val allAssetResponse: MutableLiveData<AllAssetsResponse?> = MutableLiveData()
+    var navigateToDeatail: Boolean = false
 
     private val TAG = "MainViewModelLog"
 
@@ -28,9 +30,11 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
 
     }
     public fun getAllAsset(packageId: String) {
+        progressNavigator?.showProgress(true)
         dataRepository.getAllAssets(packageId, object : AllAssetManager.AssetCallback<AllAssetsResponse> {
             override fun onSuccess(success: AllAssetsResponse) {
 
+                progressNavigator?.showProgress(false)
                 Log.e(TAG, "onSuccess: "+success.assets.toString())
                 allAssetResponseObserver.postValue(
                     Resource.success(success)
@@ -38,6 +42,7 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
             }
 
             override fun onFailure(error: ErrorData) {
+                progressNavigator?.showProgress(false)
                 Log.e(TAG, "onFailure: "+error.message)
                 allAssetResponseObserver.postValue(
                     Resource.error(error.message?:"Something went wrong")
@@ -46,7 +51,8 @@ public class MainViewModel @Inject constructor(private val dataRepository: DataR
         })
     }
 
-    fun onPackageItemClicked(packageId: String) {
+    fun onPackageItemClicked(packageId: String, navigateToFlow: Boolean) {
+        navigateToDeatail = navigateToFlow
         onPackageItemClickListener.postValue(packageId)
     }
 

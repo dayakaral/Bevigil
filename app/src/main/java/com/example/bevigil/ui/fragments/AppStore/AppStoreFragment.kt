@@ -1,33 +1,35 @@
 package com.example.bevigil.ui.fragments.AppStore
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bevigil.R
+import com.example.bevigil.adapters.InstalledAppsAdapter
+import com.example.bevigil.adapters.ItemClickListener
+import com.example.bevigil.ui.activities.MainViewModel
+import com.example.bevigil.utils.Status
+import kotlinx.android.synthetic.main.error_layout.*
+import kotlinx.android.synthetic.main.fragment_app_store.*
+import kotlinx.android.synthetic.main.fragment_installed_app.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AppStoreFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AppStoreFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class AppStoreFragment : Fragment(), ItemClickListener {
+
+    private lateinit var viewModel: MainViewModel
+    private lateinit var installedAppsAdapter: InstalledAppsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        viewModel =
+            ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -38,23 +40,67 @@ class AppStoreFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_app_store, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AppStoreFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AppStoreFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.allAssetResponseObserver.observe(viewLifecycleOwner, Observer {response ->
+
+
+            when(response.status) {
+
+                Status.SUCCESS -> {
+                    viewModel.allAssetResponse.postValue(response.data)
+
+                    addData(response.data?.packageId)
+                    appstore_recycler.visibility = View.VISIBLE
+                    searching_screen.visibility = View.GONE
+                    error_screen.visibility = View.GONE
+                }
+
+                Status.ERROR -> {
+                    viewModel.allAssetResponse.postValue(null)
+                    searching_screen.visibility = View.GONE
+                    error_screen.visibility = View.VISIBLE
+                    error_message.text = response.message
+                    appstore_recycler.visibility = View.INVISIBLE
                 }
             }
+        })
+
+        installedAppsAdapter = InstalledAppsAdapter(HashMap(), this)
+        appstore_recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        appstore_recycler.adapter = installedAppsAdapter
+    }
+
+    fun addData(packageName: String?) {
+        val list = ArrayList<String?>()
+        list.add(packageName)
+
+        installedAppsAdapter.packageNameList = list
+        installedAppsAdapter.appNamesList = null
+        installedAppsAdapter.notifyDataSetChanged()
+
+    }
+
+    fun onSearchTextChanged(changedText: String) {
+//        if (changedText.isEmpty()) {
+//
+//        }
+        if (error_screen.isVisible) {
+            error_screen.visibility = View.GONE
+            searching_screen.visibility = View.VISIBLE
+        }
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance() =
+            AppStoreFragment().apply {
+
+            }
+    }
+
+    override fun onItemClicked(packageName: String) {
+        viewModel.onPackageItemClicked(packageName, false)
     }
 }
